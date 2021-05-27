@@ -1,21 +1,33 @@
-var exspress =require("express");
-const loginRoutes = require('../Routers/loginRoutes');
+var exspress =require('express');
+const useToken=require('../schema/useToken')
 const userSchema =require('../schema/userSchema')
    const loginSchema=require('../schema/loginSchema')
-function loginControl(){
-    function chekUser(req,res){
-       userSchema.findOne({id:req.body.id},function(err,user){
+
+
+
+   function loginControl(){
+       // if user is null 
+    function chekUserNoEtxsit(req,res){
+       userSchema.findOne({password:req.body.id},function(err,user){
            if(err){
-              return res.status(500).send()
-           }
-           if(user){
-            return res.status(500).send("User exist")
+               return res.status(404).send()
+            }
+            
+            if(user){
+              
+            return res.status(400).send("User exist")
            }
            var code="1234"
-           newLogin=new loginSchema({id:req.body.id,code:code})
-           newLogin.save()
-           req.body._id=newLogin._id
-           res.status(200).send(req.body)
+           newLogin=new loginSchema({code:code})
+           newLogin.save(function(err,doco){
+               if(err){
+                return res.status(500).send()
+               }
+              
+            
+               res.status(200).send({_id:doco._id})
+           })
+         
            
     
        }) 
@@ -23,35 +35,60 @@ function loginControl(){
      }
 
      function chekCode(req,res){
-         loginSchema.findOne(req.body,function(err,user){
-             if(err){
+        //  loginSchema.findOne(req.body,function(err,user){
+        //      if(err){
+        //         return res.status(500).send()
+        //      }
+        //      if(!user){
+        //          return res.status(401).send("no access")
+        //      }
+   // }) 
+             loginSchema.updateOne({_id:req.body._id,code:req.body.code},{$set:{codeAuth:true}},function(err,result){
+              if(err){
                 return res.status(500).send()
-             }
-             if(!user){
-                 return res.status(401).send("no access")
-             }
-             newLogin.updata(req.body,{$set:{codeAuth:true}});
-             res.status(200).send("codeAuth")
+              }
+              if(!result.n){
+               return res.status(404).send("err not find")
+              }
+              res.status(201).send({_id:req.body._id}) 
 
-         })
+             });
+            
+
+        
      }
 
      function imageAuth(req,res){
-         if(true){
-           var newUser=new userSchema(req.body)
-            newUser.save(function(err,user){
-                if(err){
-                    return res.status(500).send()
-                 }
-                 if(!user){
-                    return res.status(401).send("no access")
-                 }
-                 
-            })
-         }
+
+        loginSchema.findOne({_id:req.body._id,codeAuth:true},function(err,user){
+
+            if(err){
+                return res.status(500).send()
+            }
+            if(!user){
+                return res.status(404).send("err not find")
+            }
+
+            if(true){
+             
+                var newUser=new userSchema(req.body)
+                 newUser.save(function(err,user){
+                     if(err){
+                         return res.status(500).send()
+                      }
+                      if(!user){
+                         return res.status(401).send("no access")
+                      }
+                      res.status(201).send({token:new useToken(true,null,req.body.fullname).token}) 
+     
+                 })
+              }
+            
+        })
+        
      }
      return{
-         chekUser,
+         chekUserNoEtxsit,
          chekCode,
          imageAuth
      }
