@@ -2,7 +2,7 @@ var exspress =require('express');
 const useToken=require('../schema/useToken')
 const userSchema =require('../schema/userSchema')
    const loginSchema=require('../schema/loginSchema')
-
+const smsVonage=require('../utils/vonage')
 
 
    function loginControl(){
@@ -18,43 +18,42 @@ const userSchema =require('../schema/userSchema')
               
             return res.status(400).send("User exist")
            }
-           var code="1234"
-           newLogin=new loginSchema({code:code})
-           newLogin.save(function(err,doco){
-               if(err){
-                return res.status(500).send()
-               }
+        //    var code="1234"
+        //    newLogin=new loginSchema({code:code})
+        //    newLogin.save(function(err,doco){
+        //        if(err){
+        //         return res.status(500).send()
+        //        }
               
             
-               res.status(200).send({_id:doco._id})
-           })
+        //        res.status(200).send({_id:doco._id})
+        //    })
          
-           
+        smsVonage.request(req,res,req.body.phoneNumber)
     
        }) 
       
      }
 
      function chekCode(req,res){
-        //  loginSchema.findOne(req.body,function(err,user){
-        //      if(err){
-        //         return res.status(500).send()
-        //      }
-        //      if(!user){
-        //          return res.status(401).send("no access")
-        //      }
-   // }) 
-             loginSchema.updateOne({_id:req.body._id,code:req.body.code},{$set:{codeAuth:true}},function(err,result){
-              if(err){
-                return res.status(500).send()
-              }
-              if(!result.n){
-               return res.status(404).send("err not find")
-              }
-              res.status(201).send({_id:req.body._id}) 
 
-             });
+            //  loginSchema.updateOne({_id:req.body._id,code:req.body.code},{$set:{codeAuth:true}},function(err,result){
+            //   if(err){
+            //     return res.status(500).send()
+            //   }
+            //   if(!result.n){
+            //    return res.status(404).send("err not find")
+            //   }
+            //   res.status(201).send({_id:req.body._id}) 
+
+            //  });
+
+            //true send sms
+            console.log("reqss");
+        smsVonage.check(res,req.body)
+                
             
+        
 
         
      }
