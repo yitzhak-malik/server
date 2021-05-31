@@ -12,6 +12,16 @@ var userSchema=new schema({
     },
     id:{
         type:String
+    },
+    phoneNumber:{
+        type:Number
+
+    },
+    role:{
+        type:String
+    },
+    roleNumber:{
+        type:Number
     }
 })
 module.exports = mongoose.model('user',userSchema);

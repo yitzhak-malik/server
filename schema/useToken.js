@@ -20,7 +20,7 @@ if(isNew){
     )
 }else{
     this.token=token
-    var data=encToken.getDecrypto(token).split(split)
+    var data = encToken.getDecrypto(token).split(split)
     this.fullName=data[0]
     this._id=data[1]
     this.role=data[2]
