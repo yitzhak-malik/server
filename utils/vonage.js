@@ -6,15 +6,15 @@ const vonage = new Vonage({
 
 function smsVonage(){
 
-function request(req,res,number){
-    console.log(number);
+function request(req,res){
+    console.log(req.body.phoneNumber);
     vonage.verify.request({
-        number: number,
+        number:req.body.phoneNumber,
         brand: "izik madical"
       }, (err, result) => {
         if (err) {
           console.error(err);
-          res.status(400).send('err vonage')
+          res.status(400).send(err)
         } else {
           const verifyRequestId = result.request_id;
           console.log('request_id', verifyRequestId);
@@ -25,13 +25,11 @@ function request(req,res,number){
     
 }
 
-function check(res,REQUEST){
-    var REQUEST_ID=REQUEST._ID
-    var CODE=REQUEST.CODE
-console.log(REQUEST);
+function check(req,res){
+  
     vonage.verify.check({
-        request_id: REQUEST_ID,
-        code: CODE
+        request_id:req.body.sms.request_id,
+        code:req.body.sms.code
       }, (err, result) => {
         if (err) {
           console.error(err);
