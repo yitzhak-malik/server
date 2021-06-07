@@ -7,10 +7,12 @@ console.log(req.headers);
     var userToken = new token(false, req.headers['x-access-token']);
 
     if(userToken.isNotExprision){
-        req.auth=userToken
-        console.log("token work");
+        req.User=userToken;
+       
+        console.log("token work!!");
         return next()
     }
+  
     res.status(401).send();
     
 }

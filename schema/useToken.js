@@ -6,10 +6,10 @@ const ttl=1000*60*2
 
 function useToken(isNew,token,fullName,_id,role,roleNum){
 if(isNew){
-    this.fullName=fullName
-    this._id=_id
-    this.role=role
-    this.roleNum=roleNum
+    // this.fullName=fullName
+    // this._id=_id
+    // this.role=role
+    // this.roleNum=roleNum
     this.expirationTime = Date.now() + ttl;
     this.token=encToken.getEncrypto(
         fullName+split+

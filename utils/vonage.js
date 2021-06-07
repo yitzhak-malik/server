@@ -28,8 +28,8 @@ function request(req,res){
 function check(req,res){
   
     vonage.verify.check({
-        request_id:req.body.sms.request_id,
-        code:req.body.sms.code
+        request_id:req.body.request_id,
+        code:req.body.code
       }, (err, result) => {
         if (err) {
           console.error(err);
