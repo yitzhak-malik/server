@@ -10,6 +10,11 @@ var loginSchema=new schema({
     codeAuth:{
         type:Boolean,
         default:false
+    },
+     phoneNumber:{
+        type:String
+
     }
+
 })
 module.exports = mongoose.model('login',loginSchema);

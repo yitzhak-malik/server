@@ -9,18 +9,18 @@ const smsVonage=require('../utils/vonage')
        // if user is null 
     function chekUserNoEtxsit(req,res){
         console.log("chekUser ",{id:req.body.id} );
-       userSchema.findOne({id:req.body.id},function(err,user){
+       userSchema.findOne({$or:[{id:req.body.id},{phoneNumber:req.body.phoneNumber}]},function(err,user){
            if(err){
                return res.status(404).send()
             }
             
             if(user){
               
-            return res.status(400).send("User exist")
+            return res.status(400).send("User or phone exist")
            }else{
 
             var code="1234"
-            newLogin=new loginSchema({code:code})
+            newLogin=new loginSchema({code:code,phoneNumber:req.body.phoneNumber})
             newLogin.save(function(err,doco){
                 if(err){
                  return res.status(500).send()
@@ -60,13 +60,13 @@ const smsVonage=require('../utils/vonage')
 
      function imageAuth(req,res){
 
-        loginSchema.findOne({_id:req.body.auth._id,codeAuth:true},function(err,user){
+        loginSchema.findOne({_id:req.body.auth._id,phoneNumber:req.body.user.phoneNumber,codeAuth:true},function(err,user){
 
             if(err){
                 return res.status(500).send()
             }
             if(!user){
-                return res.status(404).send("err not find")
+                return res.status(406).send("err not find")
             }
 
             if(true){
@@ -79,12 +79,12 @@ const smsVonage=require('../utils/vonage')
                         return res.status(404).send("err user find")
                     }
                     
-                    req.body.user.role='interns'
+                    req.body.user.role='intern'
                     req.body.user.roleNumber=1
                    var newUser=new userSchema(req.body.user)
                     newUser.save(function(err,user){
                         if(err){
-                            return res.status(500).send()
+                            return res.status(500).send(err)
                          }
                          if(!user){
                             return res.status(401).send("no access")

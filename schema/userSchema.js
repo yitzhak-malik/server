@@ -4,17 +4,22 @@ const schema=mongoose.Schema;
 var userSchema=new schema({
     fullName:{
         type:String,
+        required: true, 
         
     },
-    password:{
+    passport:{
         type:String
 
     },
     id:{
-        type:String
+        type:String,
+        required: true, 
+        unique: true 
     },
     phoneNumber:{
-        type:Number
+        type:String, 
+        required: true, 
+        unique: true 
 
     },
     role:{
