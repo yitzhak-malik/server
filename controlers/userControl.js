@@ -1,13 +1,13 @@
 const userSchema =require('../schema/userSchema')
 
 function usesrControllers(){
-    function create(req, res){
+    function questionnaire(req, res){
        
         // var newUser= new userSchema(req.body);
         // newUser.save()
 
     
-         res.status(200).send(req.User)
+         res.status(200).send({age:999})
 
     }
 
@@ -16,8 +16,8 @@ function usesrControllers(){
 
 
     return {
-        create,
         
+        questionnaire
     }
 }
 module.exports=usesrControllers();
