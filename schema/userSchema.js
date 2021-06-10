@@ -27,6 +27,33 @@ var userSchema=new schema({
     },
     roleNumber:{
         type:Number
+    }, age:{
+        type:Number
+    },
+    country:{
+        type:String
+    },
+    city:{
+        type:String
+    },
+    graduatiunYear:{
+        type:Number
+    },
+    academic:{
+        type:String
+    },
+    medical:{
+        type:String
+    },
+    residency:{
+        type:String
+    },
+    yearInResidency:{
+        type:Number
+    },
+    department:{
+        type:String
     }
+
 })
 module.exports = mongoose.model('user',userSchema);

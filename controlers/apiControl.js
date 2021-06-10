@@ -6,8 +6,8 @@ function withToken(req,res,next) {
 console.log(req.headers);
     var userToken = new token(false, req.headers['x-access-token']);
 
-    if(userToken.isNotExprision){
-        req.User=userToken;
+    if(userToken.isNotExprision()){
+        req.user=userToken;
        
         console.log("token work!!");
         return next()
