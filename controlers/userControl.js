@@ -16,22 +16,27 @@ function usesrControllers(){
     }
     function upDateQuestionnaire(req,res){
         let upDate={
-            age:req.age,
-            country:req.country,
-            city:req.city,
-            graduatiunYear:req.graduatiunYear ,
-            academic:req.academic,
-            medical:req.medical,
-            residency:req.residency,
-            yearInResidency:req.yearInResidency,
-            department:req.department
+            age:req.body.age,
+            country:req.body.country,
+            city:req.body.city,
+            graduatiunYear:req.body.graduatiunYear ,
+            academic:req.body.academic,
+            medical:req.body.medical,
+            residency:req.body.residency,
+            yearInResidency:req.body.yearInResidency,
+            department:req.body.department
            
           
         }
         userSchema.findByIdAndUpdate(req.user._id,upDate,{new:true},function(err,doc){
-
-        console.log(doc);
-console.log('hdhfdh');
+            if(err){
+                res.status(401).send({massege:"err update"})
+            }
+         if(doc){
+            console.log(doc);
+            res.status(202).send({massege:'next'})
+         }
+        
 
         })
 
