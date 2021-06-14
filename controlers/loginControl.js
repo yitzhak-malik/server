@@ -103,10 +103,37 @@ const smsVonage=require('../utils/vonage')
         })
         
      }
+     function logIn(req,res){
+         userSchema.findOne({$or:[{phoneNumber:req.params.name},{id:req.params.name}]},function(err,doc){
+          if(err){
+           return res.status(400).send({message:'err'})
+          }if(!doc){
+            return res.status(401).send({message:'not find user'})
+          }
+          var code="1234"
+          newLogin=new loginSchema({code:code,phoneNumber:doc.phoneNumber})
+          newLogin.save(function(err,doco){
+              if(err){
+               return res.status(500).send()
+              }
+             
+           
+              res.status(200).send({user:{_id:doco._id},intern:doc})
+          })
+
+
+
+         })
+        //  console.log(req.params.name);
+         
+        //  res.status(200).send({user:{_id:'sssss'},intern:{}})
+
+     }
      return{
          chekUserNoEtxsit,
          chekCode,
-         imageAuth
+         imageAuth,
+         logIn
      }
     
 }
