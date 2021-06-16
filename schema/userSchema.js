@@ -53,6 +53,9 @@ var userSchema=new schema({
     },
     department:{
         type:String
+    },
+    token:{
+        type:String
     }
 
 })

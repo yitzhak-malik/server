@@ -110,15 +110,16 @@ const smsVonage=require('../utils/vonage')
           }if(!doc){
             return res.status(401).send({message:'not find user'})
           }
+          console.log(doc);
           var code="1234"
           newLogin=new loginSchema({code:code,phoneNumber:doc.phoneNumber})
           newLogin.save(function(err,doco){
               if(err){
                return res.status(500).send()
               }
-             
            
-              res.status(200).send({user:{_id:doco._id},intern:doc})
+           console.log(doco._id);
+              res.status(200).send({_id:doco._id})
           })
 
 
@@ -129,11 +130,39 @@ const smsVonage=require('../utils/vonage')
         //  res.status(200).send({user:{_id:'sssss'},intern:{}})
 
      }
+     function checkCodeLogin(req,res){
+      console.log(req.body);
+        loginSchema.findOne(req.body,function(err,doc){
+            if(err){
+              return  res.status(402).send({message:'err '})
+            }
+            if(!doc){
+             return   res.status(403).send({message:`code isn't verify`})
+            }
+            userSchema.findOne({phoneNumber:doc.phoneNumber},function(err,doco){
+                if(err){
+                    return  res.status(401).send({message:'err user'}) 
+                }
+                if(!doco){
+                    return  res.status(401).send({message:'err user not find'})
+                }
+               
+               doco.token=new useToken(true,null,doco.fullname,doco._id,doco.role,doco.roleNumber).token;
+                
+               
+                res.status(200).send(doco)
+                
+            })
+
+
+        })
+     }
      return{
          chekUserNoEtxsit,
          chekCode,
          imageAuth,
-         logIn
+         logIn,
+         checkCodeLogin
      }
     
 }
