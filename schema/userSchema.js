@@ -56,7 +56,10 @@ var userSchema=new schema({
     },
     token:{
         type:String
-    }
+    },
+    typeUser:{type:mongoose.Types.ObjectId,refPath:'role'},
+   
+    
 
 })
 module.exports = mongoose.model('user',userSchema);

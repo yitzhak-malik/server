@@ -3,7 +3,7 @@ const useToken=require('../schema/useToken')
 const userSchema =require('../schema/userSchema')
    const loginSchema=require('../schema/loginSchema')
 const smsVonage=require('../utils/vonage')
-
+const intern=require('../schema/intrenSchema')
 
    function loginControl(){
        // if user is null 
@@ -89,7 +89,16 @@ const smsVonage=require('../utils/vonage')
                          if(!user){
                             return res.status(401).send("no access")
                          }
-                         res.status(201).send({token:new useToken(true,null,user.fullname,user._id,user.role,user.roleNumber).token}) 
+                          let newintern=new intern()
+                          newintern.save(function(err,internDoco){
+                            if(err){
+                                return res.status(400).send(err)
+                             }
+                             
+                              user.typeUser=internDoco;
+                              user.save()
+                              res.status(201).send({token:new useToken(true,null,user.fullname,user._id,user.role,user.roleNumber).token}) 
+                          })
         
                     })
    

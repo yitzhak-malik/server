@@ -28,17 +28,45 @@ function usesrControllers(){
            
           
         }
-        userSchema.findByIdAndUpdate(req.user._id,upDate,{new:true},function(err,doc){
+        
+        userSchema.findById(req.user._id,function(err,user){
             if(err){
-                res.status(401).send({massege:"err update"})
+                
+                res.status(500).send({massege:"err update 2"})
             }
-         if(doc){
-            console.log(doc);
-            res.status(202).send({massege:'next'})
-         }
+            user.populate('typeUser',function(err,pop){
+             if(err){
+                
+                res.status(500).send({massege:"err update 2"})
+               }
+             
+               pop.typeUser.overwrite(upDate).save(function(err,pop){
+                   if(err){
+                    
+                    res.status(500).send({massege:"err update 3"})
+                   }
+                   if(pop){
+                    console.log(pop,'this pop');
+                    console.log(user);
+                   
+                    res.status(202).send({massege:'next'})
+                   }
+                  
+               }) 
+               
+            })
+        })
+        // userSchema.findByIdAndUpdate(req.user._id,upDate,{new:true},function(err,doc){
+        //     if(err){
+        //         res.status(401).send({massege:"err update"})
+        //     }
+        //  if(doc){
+        //     console.log(doc);
+        //     res.status(202).send({massege:'next'})
+        //  }
         
 
-        })
+        // })
 
 
         
