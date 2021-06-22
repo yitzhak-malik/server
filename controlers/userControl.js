@@ -1,15 +1,21 @@
 const userSchema =require('../schema/userSchema')
 
 function usesrControllers(){
-    function questionnaire(req, res){
-       userSchema.findById(req.user._id,{role:0,roleNumber:0},function(err,doc){
+    function getQuestionnaire(req, res){
+       userSchema.findById(req.user._id,function(err,doc){
           if(err){
-            res.status(400).send(doc)
+           return res.status(500).send(doc)
 
           }
-          console.log(doc);
-        res.status(200).send(doc)
-
+          doc.populate('typeUser',function(err,pop){
+            if(err){
+               return res.status(500).send(doc)
+            }
+            console.log(pop,'information');
+            res.status(200).send(pop.typeUser)
+    
+          })
+       
        })
 
 
@@ -78,7 +84,7 @@ function usesrControllers(){
 
     return {
         
-        questionnaire,
+        getQuestionnaire,
         upDateQuestionnaire
     }
 }

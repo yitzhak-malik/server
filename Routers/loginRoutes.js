@@ -6,7 +6,7 @@ loginRoutes.post('/chekCode',loginControllers.chekCode);
 loginRoutes.post('/imageAuth',loginControllers.imageAuth);
 loginRoutes.post('/chekCodeForLogin',loginControllers.checkCodeLogin);
 loginRoutes.get('/logIn/:name',loginControllers.logIn);
-loginRoutes.get('/getAll')
+loginRoutes.post('/createAdmain')
 loginRoutes.delete('/:_id')
 
 module.exports=loginRoutes;

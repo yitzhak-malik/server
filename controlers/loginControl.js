@@ -1,9 +1,12 @@
 var exspress =require('express');
 const useToken=require('../schema/useToken')
 const userSchema =require('../schema/userSchema')
-   const loginSchema=require('../schema/loginSchema')
+const loginSchema=require('../schema/loginSchema')
+const adminSchema=require('../schema/adminSchema')
+
 const smsVonage=require('../utils/vonage')
-const intern=require('../schema/intrenSchema')
+const intern=require('../schema/intrenSchema');
+const token = require('../utils/token');
 
    function loginControl(){
        // if user is null 
@@ -166,12 +169,46 @@ const intern=require('../schema/intrenSchema')
 
         })
      }
+     function createAdmin(req,res){
+        req.body.user.role='admin'
+        req.body.user.roleNumber=400
+        req.body.password=token.cryptPassword(req.body.password)
+         var user=new userSchema(req.body)
+        user.save(function(err,doc){
+            if(err){
+                res.status(500).send({message:'err'})
+            }
+           new adminSchema(req.body).save(function(err,admin){
+            if(err){
+                res.status(500).send({message:'err admain'})
+            }
+            doc.typeUser=admin
+            console.log(doc);
+            res.status(201).send({message:'admain create'})
+
+           })
+
+         }) 
+     }
+     function loginAdmin(req,res){
+       userSchema.findOne({fullname:req.body.fullname},function(err,doc){
+           if (err) {
+            res.status(500).send({message:'err admain'})
+           }
+           if (!doc) {
+            res.status(400).send({message:'err admain'})
+           }
+           
+       })
+     }
      return{
          chekUserNoEtxsit,
          chekCode,
          imageAuth,
          logIn,
-         checkCodeLogin
+         checkCodeLogin,
+         createAdmin,
+         loginAdmin
      }
     
 }
