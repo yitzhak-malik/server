@@ -6,16 +6,17 @@ var testSchema=new schema({
   subject:String,
   url:String,
   score:Number,
+  role:String,
   isNew:{
     type:Boolean,
     default:true
   },
 
   date:{
-    default:new date.now()
+    default:Date.now()
   },
-  supervisor:{type:mongoose.Types.ObjectId,ref:'user'},
-  intern:{type:mongoose.Types.ObjectId,ref:'user'}
+  sender:{type:mongoose.Types.ObjectId,refPeth:'role'}
+  
  
 })
 module.exports = mongoose.model('test',testSchema);

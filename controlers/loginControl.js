@@ -170,34 +170,52 @@ const token = require('../utils/token');
         })
      }
      function createAdmin(req,res){
-        req.body.user.role='admin'
-        req.body.user.roleNumber=400
+         console.log(req);
+        req.body.role='admin'
+        req.body.roleNumber=400
+        req.body.phoneNumber=req.body.id
+        req.body.fullName=req.body.id
         req.body.password=token.cryptPassword(req.body.password)
          var user=new userSchema(req.body)
         user.save(function(err,doc){
             if(err){
-                res.status(500).send({message:'err'})
+                console.log(err,"user");
+               return res.status(500).send({message:'err'})
             }
            new adminSchema(req.body).save(function(err,admin){
             if(err){
-                res.status(500).send({message:'err admain'})
+               return res.status(500).send({message:'err admain'})
             }
             doc.typeUser=admin
+            user.save()
             console.log(doc);
-            res.status(201).send({message:'admain create'})
+            res.status(201).send({token:new useToken(true,null,admin.fullname,admin._id,admin.role,admin.roleNumber).token})
 
            })
 
          }) 
      }
      function loginAdmin(req,res){
-       userSchema.findOne({fullname:req.body.fullname},function(err,doc){
+       userSchema.findOne({id:req.body.id},function(err,doc){
            if (err) {
-            res.status(500).send({message:'err admain'})
+          return  res.status(500).send({message:'err admain'})
            }
            if (!doc) {
-            res.status(400).send({message:'err admain'})
+          return res.status(400).send({message:'err admain'})
            }
+          doc.populate("typeUser",function(err,user){
+            if (err) {
+                return  res.status(500).send({message:'err admain'})
+                 }
+                 console.log(user);
+                 console.log(token.compare(req.body.password, user.typeUser.password));
+             if(token.compare(req.body.password, user.typeUser.password)){
+               return res.status(200).send({token:new useToken(true,null,doc.fullname,doc._id,doc.role,doc.roleNumber).token})
+             }
+             res.status(400).send({message:'err admain'})
+          
+          })
+
            
        })
      }
