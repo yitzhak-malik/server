@@ -13,7 +13,7 @@ function adminControllers(){
             if(!user){
                 return res.status(400).send("err not find")
             }
-            user.populate('typUser',function(err,admin){
+            user.populate('typeUser',function(err,admin){
             if(err){
                 return res.status(500).send()
             }
@@ -22,15 +22,17 @@ function adminControllers(){
                     return res.status(500).send()
                 }
                 if(doc){
-                    return res.status(400).send("err  find")
+                    return res.status(400).send("err find")
                 }
                 var academic= new academicSchema(req.body)
                 academic.save(function(err,doc){
                     if(err){
                         return res.status(500).send()
                     }
-                    admin.typeUser.name=doc
-                    admin.save()
+                    admin.typeUser.academics.push(doc)
+                   
+                     admin.typeUser.save((err,j)=>{console.log(err,j);})
+                    res.status(200).send()
                 })
             })
           
@@ -39,8 +41,31 @@ function adminControllers(){
 
         })
     }
+    function getAllAcademics(req,res){
+        
+        userSchema.findById(req.user._id,function (err,doc) {
+            // console.log(doc);
+        doc.populate('typeUser',function(err,user){
+            // console.log(user);
+            if(err){
+                return res.status(500).send()
+            }if (user) {
+                user.typeUser.populate({path:'academics'},function(err,admin){
+                    if(err){
+                        return res.status(500).send()
+                    }
+                    if (admin) {
+                        return res.status(500).send()
+                    } 
+                }) 
+            }
+
+        })
+    })
+    }
     return{
-        createAcademic
+        createAcademic,
+        getAllAcademics
     }
 }
 module.exports=adminControllers()

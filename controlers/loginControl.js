@@ -213,7 +213,7 @@ const token = require('../utils/token');
                return res.status(200).send({token:new useToken(true,null,doc.fullname,doc._id,doc.role,doc.roleNumber).token})
              }
              res.status(400).send({message:'err admain'})
-          
+           
           })
 
            
