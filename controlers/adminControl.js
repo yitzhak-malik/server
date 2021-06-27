@@ -1,6 +1,9 @@
-const { findById } = require('../schema/userSchema')
-const userSchema =require('../schema/userSchema')
-const academicSchema =require('../schema/academicSchema')
+
+const userSchema =require('../schema/userSchema');
+const academicSchema =require('../schema/academicSchema');
+const supervisorSchema =require('../schema/supervisorSchema');
+const adminSchema =require('../schema/adminSchema');
+
 
 function adminControllers(){
 
@@ -55,17 +58,71 @@ function adminControllers(){
                         return res.status(500).send()
                     }
                     if (admin) {
-                        return res.status(500).send()
+                   
+                        return res.status(200).send( {academics:admin.academics.map(data=>nameIs=data.name)} )
                     } 
+                    
                 }) 
             }
 
         })
     })
     }
+    function createSupervisor(req,res) {
+        userSchema.findOne({$or:[{id:req.body.supervisor.id},{phoneNumber:req.body.supervisor.phoneNumber}]},function(err,user){
+
+            if(err){
+                return res.status(500).send()
+             }
+             
+             if(user){
+               
+             return res.status(400).send("User or phone exist")
+             }
+             if(!user){
+                 req.body.supervisor.role='supervisor'
+                 req.body.supervisor.roleNumber=200
+                
+                 newUser=new userSchema(req.body.supervisor)
+                 newUser.save(function (err,user) {
+                     if(err){
+                         return res.status(500).send()
+                        }
+                     if(user){
+                         adminSchema.findById(req.user._idS,function(err,admin){
+                            if (err) {
+                                return res.status(500).send()
+                            }
+                             admin.populate('academics',function(err,admin){
+                               
+                                if (err) {
+                                    return res.status(500).send()
+                                }
+                                if (admin) {
+                                   for(let academic of admin.academics.filter(data=>req.body.arrAcademics.includes(data.name)) ) {
+                                       console.log("this",academic);
+                                     academic.supervisors.push(newUser)
+                                     academic.save()
+                                     console.log("this",academic);
+                                   }
+                                  
+                                    req.body.arrAcademics=admin.academics.filter(data=>req.body.arrAcademics.includes(data.name)).map(data=>id=data._id)
+                                    new supervisorSchema({academics:req.body.arrAcademics}).save()
+                                   return res.status(200).send()
+
+                             }
+
+                         } )
+                         })
+                     }
+                 })
+             }
+        })
+    }
     return{
         createAcademic,
-        getAllAcademics
+        getAllAcademics,
+        createSupervisor
     }
 }
 module.exports=adminControllers()

@@ -14,7 +14,7 @@ const token = require('../utils/token');
         console.log("chekUser ",{id:req.body.id} );
        userSchema.findOne({$or:[{id:req.body.id},{phoneNumber:req.body.phoneNumber}]},function(err,user){
            if(err){
-               return res.status(404).send()
+               return res.status(500).send()
             }
             
             if(user){
@@ -189,7 +189,7 @@ const token = require('../utils/token');
             doc.typeUser=admin
             user.save()
             console.log(doc);
-            res.status(201).send({token:new useToken(true,null,admin.fullname,admin._id,admin.role,admin.roleNumber).token})
+            res.status(201).send({token:new useToken(true,null,doc.fullname,doc._id,doc.role,doc.roleNumber,doc.typeUser).token})
 
            })
 
@@ -210,7 +210,7 @@ const token = require('../utils/token');
                  console.log(user);
                  console.log(token.compare(req.body.password, user.typeUser.password));
              if(token.compare(req.body.password, user.typeUser.password)){
-               return res.status(200).send({token:new useToken(true,null,doc.fullname,doc._id,doc.role,doc.roleNumber).token})
+               return res.status(200).send({token:new useToken(true,null,doc.fullname,doc._id,doc.role,doc.roleNumber,doc.typeUser._id).token})
              }
              res.status(400).send({message:'err admain'})
            
