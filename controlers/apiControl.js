@@ -3,7 +3,7 @@ const token=require('../schema/useToken');
 
 
 function withToken(req,res,next) {
-console.log(req.headers);
+
     var userToken = new token(false, req.headers['x-access-token']);
 
     if(userToken.isNotExprision()){

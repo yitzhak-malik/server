@@ -1,10 +1,10 @@
 const encToken=require('../utils/token')
 
 const split='<?>'
-const ttl=1000*60*2
+const ttl=1000*60*10
 
 
-function useToken(isNew,token,fullName,_id,role,roleNum){
+function useToken(isNew,token,fullName,_id,role,roleNum,_idS){
 if(isNew){
     // this.fullName=fullName
     // this._id=_id
@@ -16,7 +16,8 @@ if(isNew){
         _id+split+
         role+split+
         roleNum+split+
-       this.expirationTime
+       this.expirationTime+split
+       +_idS
     )
 }else{
     this.token=token
@@ -26,6 +27,7 @@ if(isNew){
     this.role=data[2]
     this.roleNum=data[3]
     this.expirationTime = data[4]
+    this._idS = data[5]
 
 }
 this.isNotExprision=function () {

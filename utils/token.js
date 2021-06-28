@@ -1,5 +1,5 @@
 const cryptoJs=require('crypto-js')
-const bcrypt=require('bcryptjs')
+const Bcrypt=require('bcryptjs')
 const key='ljhdsgfygiuhg376jhdshyeryt6'
 
 function crypto(){
