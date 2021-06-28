@@ -100,7 +100,7 @@ const token = require('../utils/token');
                              
                               user.typeUser=internDoco;
                               user.save()
-                              res.status(201).send({token:new useToken(true,null,user.fullname,user._id,user.role,user.roleNumber).token}) 
+                              res.status(201).send({token:new useToken(true,null,user.fullname,user._id,user.role,user.roleNumber,user.typeUser).token}) 
                           })
         
                     })
@@ -159,7 +159,7 @@ const token = require('../utils/token');
                     return  res.status(401).send({message:'err user not find'})
                 }
                
-               doco.token=new useToken(true,null,doco.fullname,doco._id,doco.role,doco.roleNumber).token;
+               doco.token=new useToken(true,null,doco.fullname,doco._id,doco.role,doco.roleNumber,doco.typeUser._id).token;
                 
                
                 res.status(200).send(doco)
@@ -189,7 +189,7 @@ const token = require('../utils/token');
             doc.typeUser=admin
             user.save()
             console.log(doc);
-            res.status(201).send({token:new useToken(true,null,doc.fullname,doc._id,doc.role,doc.roleNumber,doc.typeUser).token})
+            res.status(201).send({token:new useToken(true,null,doc.fullname,doc._id,doc.role,doc.roleNumber,doc.typeUser._id).token})
 
            })
 

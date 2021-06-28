@@ -8,7 +8,7 @@ const adminSchema =require('../schema/adminSchema');
 function adminControllers(){
 
     function createAcademic(req,res){
-
+        
         userSchema.findById(req.user._id,function(err,user){
             if(err){
                 return res.status(500).send()
@@ -47,7 +47,7 @@ function adminControllers(){
     function getAllAcademics(req,res){
         
         userSchema.findById(req.user._id,function (err,doc) {
-            // console.log(doc);
+        
         doc.populate('typeUser',function(err,user){
             // console.log(user);
             if(err){
@@ -99,17 +99,20 @@ function adminControllers(){
                                     return res.status(500).send()
                                 }
                                 if (admin) {
-                                   for(let academic of admin.academics.filter(data=>req.body.arrAcademics.includes(data.name)) ) {
-                                       console.log("this",academic);
+                                  var academics=admin.academics.filter(data=>req.body.arrAcademics.includes(data.name))
+                                   for(let academic of academics ) {
                                      academic.supervisors.push(newUser)
                                      academic.save()
-                                     console.log("this",academic);
                                    }
-                                  
-                                    req.body.arrAcademics=admin.academics.filter(data=>req.body.arrAcademics.includes(data.name)).map(data=>id=data._id)
-                                    new supervisorSchema({academics:req.body.arrAcademics}).save()
+                                    new supervisorSchema({academics:academics}).save(function (err,newSupervisor) {
+                                            
+                                    if (err) {
+                                        return res.status(500).send()  
+                                    }
+                                    newUser.typeUser=newSupervisor
+                                    newUser.save(); 
                                    return res.status(200).send()
-
+                                })
                              }
 
                          } )
@@ -119,6 +122,14 @@ function adminControllers(){
              }
         })
     }
+    function getAllSupervisors(req,res) {
+   console.log("s");
+       adminSchema.findById(req.user._idS).populate({path:'academics',populate:{path:'supervisors'}})
+       .exec((e,r)=>console.log(r.academics.map((data)=>supervisor=data.supervisors).flat()))
+        
+            
+    
+    } 
     return{
         createAcademic,
         getAllAcademics,

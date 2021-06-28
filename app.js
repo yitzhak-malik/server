@@ -18,4 +18,5 @@ app.use('/auth',loginRoutes)
 app.use('/api',auth)
 app.use('/api/users',userRoutes);
 app.use('/api/admin',require('./Routers/adminRoutes'));
+app.use('/api/supervisor',require('./Routers/supervisorRoutes'));
 
