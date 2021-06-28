@@ -215,14 +215,14 @@ const token = require('../utils/token');
              res.status(400).send({message:'err admain'})
            
           })
-
+ 
            
        })
      }
      return{
          chekUserNoEtxsit,
          chekCode,
-         imageAuth,
+         imageAuth, 
          logIn,
          checkCodeLogin,
          createAdmin,
