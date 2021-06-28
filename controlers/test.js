@@ -24,7 +24,7 @@ function newTest(req,res){
 userschema.findOne({id:req.body},function(err,doc) {
     tester=new testSchema(doc) 
     tester.save(function(err,re){
-        tester.
+        
     })
 })
 

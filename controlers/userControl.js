@@ -1,4 +1,5 @@
 const userSchema =require('../schema/userSchema')
+const academicSchema =require('../schema/academicSchema')
 
 function usesrControllers(){
     function getQuestionnaire(req, res){
@@ -77,6 +78,17 @@ function usesrControllers(){
 
         
     }
+    function getAllAcademics(req,res) {
+        console.log('getAllAcademics');
+        academicSchema.find({},{name:1,_id:0},(err,result)=>{
+            if(err){
+                console.log(err);
+              return res.status(500).send()
+            }
+            console.log(result);
+            res.status(200).send(result)
+        })
+    }
 
     
 
@@ -85,7 +97,8 @@ function usesrControllers(){
     return {
         
         getQuestionnaire,
-        upDateQuestionnaire
+        upDateQuestionnaire,
+        getAllAcademics
     }
 }
 module.exports=usesrControllers();

@@ -14,7 +14,6 @@ const userRoutes=require('./Routers/userRoutes');
 const loginRoutes=require('./Routers/loginRoutes')
 app.use(exspress.json())
 app.use(cors())
-//app.post('kk',require())
 app.use('/auth',loginRoutes)
 app.use('/api',auth)
 app.use('/api/users',userRoutes);
