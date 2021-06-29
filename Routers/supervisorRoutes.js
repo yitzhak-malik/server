@@ -9,6 +9,7 @@ supervisorRoutes.get('/getAllInterns',);
 supervisorRoutes.post('/createClass',);
 supervisorRoutes.get('/getAllclass',);
 supervisorRoutes.post('/createTest',);
+supervisorRoutes.post('/getInterns',supervisorControllers.getInterns);
 // adminRoutes.delete()
 // adminRoutes.get();
 

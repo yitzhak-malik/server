@@ -1,6 +1,7 @@
 const userSchema =require('../schema/userSchema')
 const academicSchema =require('../schema/academicSchema')
 
+
 function usesrControllers(){
     function getQuestionnaire(req, res){
        userSchema.findById(req.user._id,function(err,doc){
@@ -22,7 +23,7 @@ function usesrControllers(){
 
     }
     function upDateQuestionnaire(req,res){
-        let upDate={
+        var upDate={
             age:req.body.age,
             country:req.body.country,
             city:req.body.city,
@@ -35,12 +36,19 @@ function usesrControllers(){
            
           
         }
+         console.log(upDate);
         
         userSchema.findById(req.user._id,function(err,user){
             if(err){
                 
                 res.status(500).send({massege:"err update 2"})
             }
+            if(upDate.academic){
+                academicSchema.findOne({name:upDate.academic},function(err,academic){
+                    academic.interns.push(user)
+                    academic.save()
+                })
+               }
             user.populate('typeUser',function(err,pop){
              if(err){
                 
