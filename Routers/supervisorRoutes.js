@@ -6,10 +6,10 @@ supervisorRoutes.use('',function(req,res,next){
 })
 supervisorRoutes.get('/getAllAcademics',supervisorControllers.getAllAcademics);
 supervisorRoutes.get('/getAllInterns',);
-supervisorRoutes.post('/createClass',);
-supervisorRoutes.get('/getAllclass',);
-supervisorRoutes.post('/createTest',);
+supervisorRoutes.post('/getClasses',supervisorControllers.getClasses,);
+supervisorRoutes.post('/createClass',supervisorControllers.createClass);
 supervisorRoutes.post('/getInterns',supervisorControllers.getInterns);
+supervisorRoutes.post('/getInternsOfClass',supervisorControllers.getInternsOfClass);
 // adminRoutes.delete()
 // adminRoutes.get();
 
