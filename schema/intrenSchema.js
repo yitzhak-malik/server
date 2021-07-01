@@ -30,8 +30,8 @@ var internSchema=new schema({
     department:{
         type:String
     },
-    testGet:[{type:mongoose.Types.ObjectId,ref:'test'}],
-    testPost:[{type:mongoose.Types.ObjectId,ref:'test'}]
+    classes:[{type:mongoose.Types.ObjectId,ref:'class'}],
+    tests:[{type:mongoose.Types.ObjectId,ref:'test'}]
 
 })
 module.exports = mongoose.model('intern',internSchema);

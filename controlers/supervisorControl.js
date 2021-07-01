@@ -23,11 +23,17 @@ const classSchema=require('../schema/classSchema')
      }
 
      function getInterns(req,res){
-         console.log('kkkk');
+         console.log(req.body.name);
+         if(!req.body.name){
+           return res.status(400).send()
+         }
         supervisorSchema.findById(req.user._idS).populate({path:'academics',match:{name:req.body.name},populate:{path:'interns',select:'-_id -typeUser'}})
         .exec((err,supervisor)=>{
             if (err) {
                 return res.status(500).send()
+               } 
+               if(!supervisor.academics[0]){
+                  return res.status(400).send()
                }
                res.status(200).send(supervisor.academics[0].interns)
                console.log(supervisor.academics[0].interns,'intern',err)
@@ -53,36 +59,51 @@ const classSchema=require('../schema/classSchema')
 
 
      function getClasses(req,res){
-        console.log('get class',req.body.academic);
+       //console.log('get class',req.body.academic);
         supervisorSchema.findById(req.user._idS).populate({path:'classes',match:{academicName:req.body.academic}}).exec((err,supervisor)=>{
             if(err){
                return res.status(500).send()
             }
-            console.log(supervisor, 'this classes');
+            //console.log(supervisor, 'this classes');
             res.status(200).send(supervisor.classes)})
      }
 
 
      function createClass(req,res){console.log('hi this creat class');
-     
-     supervisorSchema.findById(req.user._idS).populate({path:'academics',match:{name:req.body.academic}, populate:{path:'interns',match:{id:{'$in':req.body.namesInterns}}}}).exec(
+     if(!req.body.nameClass && !req.body.academic && !req.body.namesInterns[0] ){
+        console.log('ksksk');
+      return res.status(400).send()
+     }
+     supervisorSchema.findById(req.user._idS).populate({path:'academics',match:{name:req.body.academic},
+      populate:{path:'interns',match:{id:{'$in':req.body.namesInterns}},
+      populate:{path:'typeUser'}}}).exec(
         (err,supervisor)=>{
          if(err){
             return res.status(500).send()
          }
+         console.log(err,'this is pop of super',supervisor.academics[0].interns);
          var newClass=classSchema({name:req.body.nameClass,academicName:req.body.academic,interns:supervisor.academics[0].interns})
          newClass.save((err,theClass)=>{
             if(err){
                return res.status(500).send()
             }
-            console.log(theClass,'this is class');
+            
             supervisor.classes.push(theClass)
-            supervisor.save()
+            supervisor.save((err,f)=>{
+        
+               supervisor.academics[0].interns.forEach(element => {
+                  element.typeUser.classes.push(theClass)
+                  element.typeUser.save()
+     
 
-            res.status(201).send()
+            }
+            )
+            });
+
+            res.status(201).send()   
          }
          ) 
-           
+            
         })}
       
      return{
