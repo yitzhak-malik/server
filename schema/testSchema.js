@@ -7,16 +7,17 @@ var testSchema=new schema({
   url:String,
   score:Number,
   role:String,
-  isNew:{
+ New:{
     type:Boolean,
     default:true
   },
 
   date:{
+    type:Date,
     default:Date.now()
-  },
-  sender:{type:mongoose.Types.ObjectId,refPeth:'role'}
-  
+  }
+
+    
  
 })
 module.exports = mongoose.model('test',testSchema);

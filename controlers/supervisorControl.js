@@ -6,6 +6,7 @@ const adminSchema=require('../schema/adminSchema')
 const academicSchema=require('../schema/academicSchema')
 const supervisorSchema=require('../schema/supervisorSchema')
 const classSchema=require('../schema/classSchema')
+const testSchema = require('../schema/testSchema')
 
 
 
@@ -105,13 +106,35 @@ const classSchema=require('../schema/classSchema')
          ) 
             
         })}
+
+        function createTest(req,res){
+           console.log(req.body._idClass);
+      classSchema.findById(req.body._idClass,(err,theClass)=>{
+         if(err)
+        {return res.status(500).send()}
+        if(!theClass)console.log('hhhh');
+        console.log(theClass);
+        var test =new testSchema(req.body)
+        test.save((err,test)=>{
+         if(err)
+         {return res.status(500).send()}
+         theClass.tests.push(test)
+         theClass.save((err,testinclass)=>{
+            console.log(testinclass,err);
+            res.status(201).send()
+         })
+
+        })
+      })
+        }
       
      return{
         getAllAcademics,
         getInterns, 
         getClasses,
         createClass,
-        getInternsOfClass
+        getInternsOfClass,
+        createTest
      }
     
 }
