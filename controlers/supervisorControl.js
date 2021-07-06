@@ -122,8 +122,8 @@ const testSchema = require('../schema/testSchema')
          theClass.save((err,testinclass)=>{
             console.log(testinclass,err);
             res.status(201).send()
-         })
-
+         }) 
+ 
         })
       })
         }
