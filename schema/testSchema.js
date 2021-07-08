@@ -6,16 +6,18 @@ var testSchema=new schema({
   subject:String,
   url:String,
   score:Number,
-  role:String,
+  name:String,
+  id:String,
  New:{
     type:Boolean,
     default:true
   },
 
   date:{
-    type:Date,
+    type:Number,
     default:Date.now()
-  }
+  },
+  backTest:[{type:mongoose.Types.ObjectId,ref:'test'}]
 
     
  

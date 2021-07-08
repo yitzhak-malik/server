@@ -11,6 +11,7 @@ supervisorRoutes.post('/createClass',supervisorControllers.createClass);
 supervisorRoutes.post('/getInterns',supervisorControllers.getInterns);
 supervisorRoutes.post('/getInternsOfClass',supervisorControllers.getInternsOfClass);
 supervisorRoutes.post('/createTest',supervisorControllers.createTest);
+supervisorRoutes.post('/getTestOfClass',supervisorControllers.getTestOfClass);
 // adminRoutes.delete()
 // adminRoutes.get();
 

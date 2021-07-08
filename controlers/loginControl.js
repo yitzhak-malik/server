@@ -158,8 +158,7 @@ const token = require('../utils/token');
                 if(!doco){
                     return  res.status(401).send({message:'err user not find'})
                 }
-               
-               doco.token=new useToken(true,null,doco.fullname,doco._id,doco.role,doco.roleNumber,doco.typeUser._id).token;
+               doco.token=new useToken(true,null,doco.fullName,doco._id,doco.role,doco.roleNumber,doco.typeUser._id).token;
                 
                
                 res.status(200).send(doco)

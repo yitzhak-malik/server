@@ -112,8 +112,8 @@ const testSchema = require('../schema/testSchema')
       classSchema.findById(req.body._idClass,(err,theClass)=>{
          if(err)
         {return res.status(500).send()}
-        if(!theClass)console.log('hhhh');
-        console.log(theClass);
+        console.log(req.user,'llll');
+       req.body.name=req.user.fullName
         var test =new testSchema(req.body)
         test.save((err,test)=>{
          if(err)
@@ -127,14 +127,26 @@ const testSchema = require('../schema/testSchema')
         })
       })
         }
-      
+        function getTestOfClass(req,res){
+           classSchema.findById(req.body._idClass,{tests:1,_id:0}).populate({path:'tests',populate:{path:'backTest'}}).exec((err,test)=>{
+              console.log('test of class',err);
+              if(err)
+            {return res.status(500).send()}
+            if(test && test.tests)
+            return res.status(200).send(test.tests)
+            else
+            res.status(400).send({p:'dfg'})
+           })
+        }
+       
      return{
         getAllAcademics,
         getInterns, 
         getClasses,
         createClass,
         getInternsOfClass,
-        createTest
+        createTest,
+        getTestOfClass
      }
     
 }
