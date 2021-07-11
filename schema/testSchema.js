@@ -8,6 +8,7 @@ var testSchema=new schema({
   score:Number,
   name:String,
   id:String,
+  note:String,
  New:{
     type:Boolean,
     default:true

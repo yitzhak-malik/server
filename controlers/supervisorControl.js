@@ -138,6 +138,17 @@ const testSchema = require('../schema/testSchema')
             res.status(400).send({p:'dfg'})
            })
         }
+       function GivingAtestScore(req,res){
+           console.log('GivingAtestScore',req.body)
+           testSchema.findByIdAndUpdate(req.body._id,{$set:{note:req.body.note,score:req.body.score}},{new:true}).exec((err,result)=>{
+            if(err)
+            {return res.status(500).send()}
+            if(result){
+               console.log(result);
+               res.status(203).send()
+            }  
+           })
+        }
        
      return{
         getAllAcademics,
@@ -146,7 +157,8 @@ const testSchema = require('../schema/testSchema')
         createClass,
         getInternsOfClass,
         createTest,
-        getTestOfClass
+        getTestOfClass,
+        GivingAtestScore
      }
     
 }
