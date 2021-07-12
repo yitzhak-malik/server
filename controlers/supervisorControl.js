@@ -113,7 +113,7 @@ const testSchema = require('../schema/testSchema')
          if(err)
         {return res.status(500).send()}
         console.log(req.user,'llll');
-       req.body.name=req.user.fullName
+       req.body.supervisorName = req.user.fullName
         var test =new testSchema(req.body)
         test.save((err,test)=>{
          if(err)

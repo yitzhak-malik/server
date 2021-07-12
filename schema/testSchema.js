@@ -3,10 +3,11 @@ const schema=mongoose.Schema;
 
 var testSchema=new schema({
   testName:String,
+  internName:String,
+  supervisorName:String,
   subject:String,
   url:String,
   score:Number,
-  name:String,
   id:String,
   note:String,
  New:{
