@@ -3,7 +3,7 @@ var exspress =require("express");
 var app=exspress();
 const cors=require('cors')
 const mongoose= require('mongoose');
-const pathDB=process.env.MONGO_URI ||  "mongodb://127.0.0.1:27017/myfirstdatabase"
+const pathDB=process.env.MONGO_URI ||    'mongodb+srv://Izakmalik:0584498641@cluster0.4vufx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority' // "mongodb://127.0.0.1:27017/myfirstdatabase"
 mongoose.connect(pathDB)
 const auth=require('./controlers/apiControl')
 
