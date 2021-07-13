@@ -13,7 +13,6 @@ list:[
          fullName:String
 }]
 
-
 })
 test= mongoose.model('test',testSchema)
 
