@@ -14,7 +14,7 @@ const token = require('../utils/token');
         console.log("chekUser ",{id:req.body.id} );
        userSchema.findOne({$or:[{id:req.body.id},{phoneNumber:req.body.phoneNumber}]},function(err,user){
            if(err){
-               return res.status(500).send()
+               return res.status(500).send({message:'err 1'})
             }
             
             if(user){
@@ -26,7 +26,7 @@ const token = require('../utils/token');
             newLogin=new loginSchema({code:code,phoneNumber:req.body.phoneNumber})
             newLogin.save(function(err,doco){
                 if(err){
-                 return res.status(500).send()
+                 return res.status(500).send({message:'err 2'})
                 }
                
              
